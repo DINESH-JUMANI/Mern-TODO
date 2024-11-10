@@ -2,14 +2,31 @@ import React from 'react';
 import moment from 'moment';
 import "./task.css";
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TaskContext from '../../context/TaskContext';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import axios from "../../Axios/axios.js"
+import TokenContext from '../../context/TokenContext';
 function Task({ task, id }) {
     const { dispatch } = useContext(TaskContext);
-
-    const handleRemove = (e) => {
+    const { userToken } = useContext(TokenContext);
+    const navigate = useNavigate()
+    const handleEditTask = (id) => {
+        navigate(`/edit/${id}`)
+    }
+    const handleRemove = async (e) => {
         e.preventDefault();
-        
+        try {
+            await axios.delete("/task/removeTask", {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                },
+                data: { id: task._id }
+            });
+        } catch (error) {
+            console.log(error);
+        }
         dispatch({
             type: "REMOVE_TASK",
             id
@@ -46,6 +63,13 @@ function Task({ task, id }) {
                         )
                     }
                 </div>
+            </div>
+            <div className="edit-task">
+                <EditIcon
+                    style={{ fontSize: 24, cursor: "pointer" }}
+                    onClick={() => handleEditTask(task._id)}
+                    className="edit-task-btn text-gray-400 hover:text-yellow-400 transition-colors duration-200" 
+                />
             </div>
             <div className="remove-task">
                 <DeleteIcon

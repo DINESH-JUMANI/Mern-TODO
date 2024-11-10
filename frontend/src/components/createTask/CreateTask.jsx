@@ -4,16 +4,25 @@ import TaskContext from '../../context/TaskContext';
 import TokenContext from '../../context/TokenContext';
 import axios from "../../Axios/axios.js"
 import "./createTask.css"
-function CreateTask() {
+
+function CreateTask({id}) {
     const { dispatch } = useContext(TaskContext)
     const { userToken } = useContext(TokenContext)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
+    const [priority, setPriority] = useState("medium") // Default priority
+    const [dueDate, setDueDate] = useState("")
     const [toast, setToast] = useState();
+
     const handleAdd = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("/task/addTask", { title, description }, {
+            const res = await axios.post("/task/addTask", { 
+                title, 
+                description,
+                priority,
+                dueDate 
+            }, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -26,10 +35,14 @@ function CreateTask() {
         dispatch({
             type: "ADD_TASK",
             title,
-            description
+            description,
+            priority,
+            dueDate
         })
         setTitle("")
         setDescription("")
+        setPriority("medium")
+        setDueDate("")
     }
 
     const showToast = () => {
@@ -41,6 +54,7 @@ function CreateTask() {
         const toast = document.getElementById('toast');
         toast.style.display = "none"
     }
+
     return (
         <div className="addContainer md:w-1/3 md:mx-auto mx-3 mt-3 flex justify-center">
             <div className='w-11/12'>
@@ -67,6 +81,31 @@ function CreateTask() {
                             onChange={(e) => setDescription(e.target.value)}
                             style={{ resize: "none" }}
                             className='bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5' />
+                    </div>
+                    <div className='my-3'>
+                        <label htmlFor="priority">Priority</label>
+                        <select
+                            name="priority"
+                            id="priority"
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value)}
+                            className='bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'
+                        >
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div className='my-3'>
+                        <label htmlFor="dueDate">Due Date</label>
+                        <input
+                            type="datetime-local"
+                            name="dueDate"
+                            id="dueDate"
+                            value={dueDate}
+                            onChange={(e) => setDueDate(e.target.value)}
+                            className='bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full p-2.5'
+                        />
                     </div>
                     <div className='flex justify-center'>
                         <button
