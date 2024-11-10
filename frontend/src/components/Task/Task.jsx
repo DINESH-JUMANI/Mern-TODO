@@ -8,13 +8,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from "../../Axios/axios.js"
 import TokenContext from '../../context/TokenContext';
+
 function Task({ task, id }) {
     const { dispatch } = useContext(TaskContext);
     const { userToken } = useContext(TokenContext);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     const handleEditTask = (id) => {
-        navigate(`/edit/${id}`)
-    }
+        navigate(`/edit/${id}`);
+    };
+
     const handleRemove = async (e) => {
         e.preventDefault();
         try {
@@ -30,15 +33,28 @@ function Task({ task, id }) {
         dispatch({
             type: "REMOVE_TASK",
             id
-        })
-    }
+        });
+    };
 
     const handleMarkDone = (e) => {
         dispatch({
             type: "MARK_DONE",
             id
-        })
-    }
+        });
+    };
+
+    const getPriorityColor = (priority) => {
+        switch (priority) {
+            case 'low':
+                return 'text-green-500';
+            case 'medium':
+                return 'text-yellow-500';
+            case 'high':
+                return 'text-red-500';
+            default:
+                return 'text-gray-500';
+        }
+    };
 
     return (
         <div className='bg-white py-6 rounded-lg shadow-lg flex items-center justify-between px-6 mb-4 border border-gray-100'>
@@ -55,6 +71,8 @@ function Task({ task, id }) {
                     {task.title}
                 </h4>
                 <p className="task-description text-gray-500 mt-1">{task.description}</p>
+                <p className={`task-priority mt-1 ${getPriorityColor(task.priority)}`}>Priority: {task.priority}</p>
+                <p className="task-due-date text-gray-500 mt-1">Due Date: {task.dueDate ? moment(task.dueDate).format('MMMM Do YYYY') : 'No due date'}</p>
                 <div className='italic text-gray-400 text-xs mt-2'>
                     {
                         task?.createdAt ? (

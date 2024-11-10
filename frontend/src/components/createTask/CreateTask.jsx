@@ -5,23 +5,23 @@ import TokenContext from '../../context/TokenContext';
 import axios from "../../Axios/axios.js"
 import "./createTask.css"
 
-function CreateTask({id}) {
+function CreateTask({ id }) {
     const { dispatch } = useContext(TaskContext)
     const { userToken } = useContext(TokenContext)
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
-    const [priority, setPriority] = useState("medium") // Default priority
+    const [priority, setPriority] = useState("low")
     const [dueDate, setDueDate] = useState("")
     const [toast, setToast] = useState();
 
     const handleAdd = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("/task/addTask", { 
-                title, 
+            const res = await axios.post("/task/addTask", {
+                title,
                 description,
                 priority,
-                dueDate 
+                dueDate
             }, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
@@ -41,7 +41,7 @@ function CreateTask({id}) {
         })
         setTitle("")
         setDescription("")
-        setPriority("medium")
+        setPriority("low")
         setDueDate("")
     }
 
@@ -99,7 +99,7 @@ function CreateTask({id}) {
                     <div className='my-3'>
                         <label htmlFor="dueDate">Due Date</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             name="dueDate"
                             id="dueDate"
                             value={dueDate}
