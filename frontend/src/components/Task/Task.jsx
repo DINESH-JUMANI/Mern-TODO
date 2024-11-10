@@ -39,6 +39,7 @@ function Task({ task, id }) {
             id
         })
     }
+
     return (
         <div className='bg-white py-6 rounded-lg shadow-lg flex items-center justify-between px-6 mb-4 border border-gray-100'>
             <div className="mark-done">

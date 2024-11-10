@@ -41,13 +41,13 @@ function Header() {
                                 <div className="flex items-center space-x-4">
                                     <NavLink
                                         to="/login"
-                                        className="text-gray-700 hover:text-gray-500 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all"
+                                        className="text-gray-700 px-4 py-2 rounded-lg"
                                     >
                                         Login
                                     </NavLink>
                                     <NavLink
                                         to="/register"
-                                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-200 ease-in-out transform hover:scale-105"
+                                        className="text-gray-700 px-4 py-2 rounded-lg"
                                     >
                                         Register
                                     </NavLink>
